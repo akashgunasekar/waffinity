@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-outfit);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[#1a110a] text-amber-50 antialiased font-sans selection:bg-amber-500 selection:text-[#1a110a];
+}
