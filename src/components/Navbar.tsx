@@ -224,7 +224,7 @@ export default function Navbar() {
     message += `Thank you for ordering! Please prepare our order.`;
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=918637622329&text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=919087798796&text=${encodedMessage}`;
 
     setOrderPlaced(true);
     window.location.href = whatsappUrl;

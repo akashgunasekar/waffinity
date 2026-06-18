@@ -10,13 +10,13 @@ export default function LocationsSection() {
       name: "Ayanavaram Branch",
       address: "New No. 231, Konnur High Rd, Ayanavaram, Chennai, Tamil Nadu 600023",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=231+Konnur+High+Rd+Ayanavaram+Chennai+600023",
-      phone: "+91 86376 22329"
+      phone: "+91 90877 98796"
     },
     {
       name: "Perambur Branch",
       address: "No. 45, Madhavaram High Rd, Perambur, Chennai, Tamil Nadu 600011",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=45+Madhavaram+High+Rd+Perambur+Chennai+600011",
-      phone: "+91 86376 22329"
+      phone: "+91 90877 98796"
     }
   ];
 
