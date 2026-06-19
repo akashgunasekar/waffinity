@@ -18,7 +18,7 @@ export default function MenuMarquee() {
     <section className="relative w-full overflow-hidden bg-[#fffbe6] py-5 my-6 shadow-xl z-10 transform rotate-2 scale-105 border-y border-[#2d1a12]/10">
       <div className="flex whitespace-nowrap">
         <motion.div
-          animate={{ x: ["0%", "-50%"] }}
+          animate={{ x: ["-50%", "0%"] }}
           transition={{ ease: "linear", repeat: Infinity, duration: 30 }}
           className="flex whitespace-nowrap shrink-0"
         >

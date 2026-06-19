@@ -44,7 +44,7 @@ export default function LocationsSection() {
                 AROUND <span className="text-amber-500 italic font-serif font-normal lowercase block sm:inline">the corner</span>
               </h2>
               <p className="text-[#3e2b20]/80 text-lg md:text-xl mb-12 max-w-xl leading-relaxed">
-                Thinking about waffles? Or maybe a sundae... or a shake? Good news—there's a Waffinity store nearby with options.
+   Freshly made waffles, creamy shakes, and indulgent desserts are closer than you think. Stop by your nearest Waffinity and satisfy every craving.
               </p>
             </motion.div>
 

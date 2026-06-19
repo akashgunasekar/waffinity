@@ -37,8 +37,8 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="flex flex-col z-10"
         >
-          <h2 className="font-heading text-5xl md:text-6xl font-bold text-amber-50 mb-6 leading-tight">
-            Crafted for <span className="text-amber-500">Perfection</span>
+          <h2 className="font-heading text-5xl md:text-6xl font-black text-amber-50 mb-6 leading-tight tracking-tight uppercase">
+            CRAFTED FOR <span className="font-serif italic font-normal text-amber-500 lowercase">perfection</span>
           </h2>
           <p className="text-lg text-stone-300 mb-6 leading-relaxed font-sans">
             We believe great waffles are not made in a hurry. Every order is prepared with care, attention, and a passion for delivering something truly special.

@@ -79,8 +79,8 @@ export default function ReviewsSection() {
 
       <div className="container mx-auto px-6 relative z-10 mt-8">
         <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-amber-50 mb-4">
-            What Our <span className="text-amber-500">Waffinityfans</span> Say
+          <h2 className="font-heading text-4xl md:text-5xl font-black text-amber-50 mb-4 tracking-tight uppercase">
+            WHAT OUR <span className="font-serif italic font-normal text-amber-500 lowercase">waffinityfans say</span>
           </h2>
           <p className="text-stone-400 text-lg max-w-xl mx-auto">
             Don't take our word for it here is what our sweet toothed community has to say about their Waffinity favorites.

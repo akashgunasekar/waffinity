@@ -15,6 +15,7 @@ interface CartItem {
   quantity: number;
   flavor: string;
   option?: string;
+  addIceCream?: boolean;
 }
 
 export default function Navbar() {
@@ -46,14 +47,14 @@ export default function Navbar() {
       const item = (e as CustomEvent).detail;
       setCartItems((prev) => {
         const existingIndex = prev.findIndex(
-          (i) => i.id === item.id && i.flavor === item.flavor && i.option === item.option
+          (i) => i.id === item.id && i.flavor === item.flavor && i.option === item.option && !i.addIceCream
         );
         if (existingIndex > -1) {
           return prev.map((i, idx) =>
             idx === existingIndex ? { ...i, quantity: i.quantity + 1 } : i
           );
         }
-        return [...prev, { ...item, quantity: 1 }];
+        return [...prev, { ...item, quantity: 1, addIceCream: false }];
       });
     };
     window.addEventListener("addToCart", handleAddToCart);
@@ -71,7 +72,7 @@ export default function Navbar() {
   };
 
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + getNumericPrice(item.price) * item.quantity,
+    (acc, item) => acc + (getNumericPrice(item.price) + (item.addIceCream ? 40 : 0)) * item.quantity,
     0
   );
 
@@ -79,11 +80,11 @@ export default function Navbar() {
   const discountAmount = promoApplied ? Math.round(subtotal * 0.1) : 0;
   const finalTotal = subtotal - discountAmount + deliveryCharge;
 
-  const updateQuantity = (id: number, flavor: string, option: string | undefined, delta: number) => {
+  const updateQuantity = (id: number, flavor: string, option: string | undefined, addIceCream: boolean | undefined, delta: number) => {
     setCartItems((prev) =>
       prev
         .map((item) => {
-          if (item.id === id && item.flavor === flavor && item.option === option) {
+          if (item.id === id && item.flavor === flavor && item.option === option && !!item.addIceCream === !!addIceCream) {
             const newQty = item.quantity + delta;
             return newQty > 0 ? { ...item, quantity: newQty } : null;
           }
@@ -93,8 +94,33 @@ export default function Navbar() {
     );
   };
 
-  const removeItem = (id: number, flavor: string, option: string | undefined) => {
-    setCartItems((prev) => prev.filter((item) => !(item.id === id && item.flavor === flavor && item.option === option)));
+  const removeItem = (id: number, flavor: string, option: string | undefined, addIceCream: boolean | undefined) => {
+    setCartItems((prev) => prev.filter((item) => !(item.id === id && item.flavor === flavor && item.option === option && !!item.addIceCream === !!addIceCream)));
+  };
+
+  const toggleIceCream = (id: number, flavor: string, option: string | undefined, currentAddIceCream: boolean | undefined) => {
+    setCartItems((prev) => {
+      const updated = prev.map((item) => {
+        if (item.id === id && item.flavor === flavor && item.option === option && !!item.addIceCream === !!currentAddIceCream) {
+          return { ...item, addIceCream: !currentAddIceCream };
+        }
+        return item;
+      });
+
+      // Consolidate duplicates if they have the same config
+      const consolidated: CartItem[] = [];
+      updated.forEach((item) => {
+        const existing = consolidated.find(
+          (c) => c.id === item.id && c.flavor === item.flavor && c.option === item.option && !!c.addIceCream === !!item.addIceCream
+        );
+        if (existing) {
+          existing.quantity += item.quantity;
+        } else {
+          consolidated.push({ ...item });
+        }
+      });
+      return consolidated;
+    });
   };
 
   const handleApplyPromo = (e: React.MouseEvent) => {
@@ -141,7 +167,7 @@ export default function Navbar() {
 
     setCartItems((prev) => {
       const existingIndex = prev.findIndex(
-        (i) => i.id === itemId && i.flavor === flavorToAdd && i.option === optionName
+        (i) => i.id === itemId && i.flavor === flavorToAdd && i.option === optionName && !i.addIceCream
       );
       if (existingIndex > -1) {
         return prev.map((i, idx) =>
@@ -158,6 +184,7 @@ export default function Navbar() {
           quantity: 1,
           flavor: flavorToAdd,
           option: optionName,
+          addIceCream: false,
         },
       ];
     });
@@ -168,9 +195,26 @@ export default function Navbar() {
     }));
   };
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const filteredValue = value.replace(/[^A-Za-z\s]/g, "");
+    setName(filteredValue);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const filteredValue = value.replace(/[^0-9]/g, "").slice(0, 10);
+    setPhone(filteredValue);
+  };
+
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone || !address || !deliverySlot) return;
+
+    if (phone.length !== 10) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
 
     // Build WhatsApp order details message
     let message = `*New Order from Waffinity!* 🧇\n\n`;
@@ -200,9 +244,9 @@ export default function Navbar() {
         };
       }
       groupedForMsg[key].flavors.push({
-        flavor: item.flavor,
+        flavor: item.flavor + (item.addIceCream ? " (+ Ice Cream)" : ""),
         quantity: item.quantity,
-        price: getNumericPrice(item.price) * item.quantity,
+        price: (getNumericPrice(item.price) + (item.addIceCream ? 40 : 0)) * item.quantity,
       });
     });
 
@@ -270,6 +314,7 @@ export default function Navbar() {
       flavor: string;
       quantity: number;
       price: string;
+      addIceCream?: boolean;
     }[];
   }[] = [];
 
@@ -291,6 +336,7 @@ export default function Navbar() {
       flavor: item.flavor,
       quantity: item.quantity,
       price: item.price,
+      addIceCream: item.addIceCream,
     });
   });
 
@@ -533,15 +579,15 @@ export default function Navbar() {
                         </h4>
                         <div className="space-y-3 max-h-40 overflow-y-auto pr-1">
                           {cartItems.map((item) => (
-                            <div key={`${item.id}-${item.flavor}-${item.option || ""}`} className="text-stone-300 border-b border-white/5 pb-2 last:border-b-0">
+                            <div key={`${item.id}-${item.flavor}-${item.option || ""}-${item.addIceCream ? "ice" : "no"}`} className="text-stone-300 border-b border-white/5 pb-2 last:border-b-0">
                               <div className="flex justify-between">
                                 <span className="font-medium">
                                   {item.title} <span className="text-stone-500">x{item.quantity}</span>
                                 </span>
-                                <span className="font-semibold">₹{getNumericPrice(item.price) * item.quantity}</span>
+                                <span className="font-semibold">₹{(getNumericPrice(item.price) + (item.addIceCream ? 40 : 0)) * item.quantity}</span>
                               </div>
                               <div className="text-[10px] text-stone-400 mt-0.5">
-                                {item.flavor}{item.option ? ` | ${item.option}` : ""}
+                                {item.flavor}{item.addIceCream ? " (+ Ice Cream)" : ""}{item.option ? ` | ${item.option}` : ""}
                               </div>
                             </div>
                           ))}
@@ -641,8 +687,10 @@ export default function Navbar() {
                           type="text"
                           required
                           value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={handleNameChange}
                           placeholder="John Doe"
+                          pattern="[A-Za-z\s]+"
+                          title="Please enter only alphabets (letters and spaces)"
                           className="w-full bg-stone-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors text-amber-50"
                         />
                       </div>
@@ -655,8 +703,10 @@ export default function Navbar() {
                           type="tel"
                           required
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={handlePhoneChange}
                           placeholder="9876543210"
+                          maxLength={10}
+                          minLength={10}
                           pattern="[0-9]{10}"
                           title="Please enter a valid 10-digit mobile number"
                           className="w-full bg-stone-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors text-amber-50"
@@ -803,45 +853,65 @@ export default function Navbar() {
                           <div className="space-y-3 pl-2 border-l-2 border-amber-500/20">
                             {group.slots.map((slot) => (
                               <div
-                                key={`${group.key}-${slot.flavor}`}
-                                className="flex items-center justify-between gap-4 py-1.5"
+                                key={`${group.key}-${slot.flavor}-${slot.addIceCream ? "ice" : "no"}`}
+                                className="border-b border-white/5 last:border-b-0 pb-3 last:pb-0"
                               >
-                                <div className="flex-grow min-w-0">
-                                  <span className="text-xs font-semibold text-stone-200 block truncate">
-                                    {slot.flavor}
-                                  </span>
-                                  <span className="text-[11px] text-amber-500 font-bold">
-                                    {slot.price} each
-                                  </span>
+                                <div className="flex items-center justify-between gap-4 py-1.5">
+                                  <div className="flex-grow min-w-0">
+                                    <span className="text-xs font-semibold text-stone-200 block truncate">
+                                      {slot.flavor} {slot.addIceCream && <span className="text-amber-400 font-bold text-[10px] ml-1">(+ Ice Cream)</span>}
+                                    </span>
+                                    <span className="text-[11px] text-amber-500 font-bold">
+                                      ₹{getNumericPrice(slot.price) + (slot.addIceCream ? 40 : 0)} each
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center gap-2.5 bg-stone-900 border border-white/10 rounded-full px-2 py-0.5 shrink-0">
+                                    <button
+                                      onClick={() => updateQuantity(group.id, slot.flavor, group.option, slot.addIceCream, -1)}
+                                      className="p-1 hover:text-amber-500 transition-colors text-stone-400 cursor-pointer"
+                                      aria-label="Decrease quantity"
+                                    >
+                                      <Minus size={12} />
+                                    </button>
+                                    <span className="text-xs font-bold text-amber-50 w-3 text-center">
+                                      {slot.quantity}
+                                    </span>
+                                    <button
+                                      onClick={() => updateQuantity(group.id, slot.flavor, group.option, slot.addIceCream, 1)}
+                                      className="p-1 hover:text-amber-500 transition-colors text-stone-400 cursor-pointer"
+                                      aria-label="Increase quantity"
+                                    >
+                                      <Plus size={12} />
+                                    </button>
+                                  </div>
+
+                                  <button
+                                    onClick={() => removeItem(group.id, slot.flavor, group.option, slot.addIceCream)}
+                                    className="text-stone-500 hover:text-red-400 p-1.5 transition-colors shrink-0 cursor-pointer"
+                                    aria-label="Remove flavor"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
                                 </div>
 
-                                <div className="flex items-center gap-2.5 bg-stone-900 border border-white/10 rounded-full px-2 py-0.5 shrink-0">
-                                  <button
-                                    onClick={() => updateQuantity(group.id, slot.flavor, group.option, -1)}
-                                    className="p-1 hover:text-amber-500 transition-colors text-stone-400 cursor-pointer"
-                                    aria-label="Decrease quantity"
-                                  >
-                                    <Minus size={12} />
-                                  </button>
-                                  <span className="text-xs font-bold text-amber-50 w-3 text-center">
-                                    {slot.quantity}
-                                  </span>
-                                  <button
-                                    onClick={() => updateQuantity(group.id, slot.flavor, group.option, 1)}
-                                    className="p-1 hover:text-amber-500 transition-colors text-stone-400 cursor-pointer"
-                                    aria-label="Increase quantity"
-                                  >
-                                    <Plus size={12} />
-                                  </button>
-                                </div>
-
-                                <button
-                                  onClick={() => removeItem(group.id, slot.flavor, group.option)}
-                                  className="text-stone-500 hover:text-red-400 p-1.5 transition-colors shrink-0 cursor-pointer"
-                                  aria-label="Remove flavor"
-                                >
-                                  <Trash2 size={14} />
-                                </button>
+                                {group.option === "New Arrival" && (
+                                  <div className="mt-1 flex items-center gap-2 pl-1 select-none">
+                                    <input
+                                      type="checkbox"
+                                      id={`ice-cream-${group.key}-${slot.flavor}-${slot.addIceCream ? "ice" : "no"}`}
+                                      checked={!!slot.addIceCream}
+                                      onChange={() => toggleIceCream(group.id, slot.flavor, group.option, slot.addIceCream)}
+                                      className="accent-amber-500 rounded border-white/10 bg-stone-900 cursor-pointer"
+                                    />
+                                    <label
+                                      htmlFor={`ice-cream-${group.key}-${slot.flavor}-${slot.addIceCream ? "ice" : "no"}`}
+                                      className="text-[10px] text-stone-400 cursor-pointer hover:text-stone-200"
+                                    >
+                                      Add Scoop of Ice Cream (+₹40)
+                                    </label>
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>

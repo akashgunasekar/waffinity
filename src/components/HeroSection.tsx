@@ -39,13 +39,15 @@ export default function HeroSection() {
       {/* Cinematic Auto-Playing Video Background */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
         <video 
-          src="/image/hero-video/Waffle_with_chocolate_splashes_202606091712.mp4"
           className="w-full h-full object-cover opacity-80"
           autoPlay
           loop
           muted
           playsInline
-        />
+          preload="auto"
+        >
+          <source src="/image/hero-video/Waffle_with_chocolate_splashes_202606091712.mp4" type="video/mp4" />
+        </video>
         {/* Dark vignette overlay to ensure text is perfectly readable against the video */}
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a110a] via-transparent to-transparent"></div>
@@ -62,12 +64,12 @@ export default function HeroSection() {
           className="mb-6"
         >
           <span className="inline-block py-1 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-500 font-bold text-sm tracking-widest uppercase mb-6 shadow-xl">
-            Authentic Belgian Recipe
+        EVERY BITE DELIGHTS
           </span>
           <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl font-black text-amber-50 leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
-            Fluffy <br className="md:hidden" />
+          Irresistibly<br className="md:hidden" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">
-              Perfection
+             Delicious
             </span>
           </h1>
         </motion.div>
@@ -79,7 +81,7 @@ export default function HeroSection() {
           variants={floatUpVariant}
           className="text-xl md:text-2xl text-stone-200 max-w-2xl font-medium drop-shadow-xl mb-12"
         >
-          Experience the satisfying crunch of imported pearl sugar, smothered in rich, dark chocolate.
+Freshly baked waffles, rich flavors, and sweet moments that turn every visit into a treat.
         </motion.p>
 
         {/* Floating Glassmorphism Button */}

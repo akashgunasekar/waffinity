@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Clock } from "lucide-react";
+import Image from "next/image";
 
 export default function ContactFooter() {
   return (
@@ -17,15 +18,25 @@ export default function ContactFooter() {
         
         {/* Brand & Socials */}
         <div className="flex flex-col">
-          <h2 className="font-heading font-bold text-3xl text-amber-500 mb-6 tracking-tight">
-            Waffinity
-          </h2>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="relative w-10 h-10 shrink-0">
+              <Image
+                src="/waffinity-logo.png"
+                alt="Waffinity Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <h2 className="font-heading font-black text-3xl text-amber-500 tracking-tight">
+              Waffinity
+            </h2>
+          </div>
           <p className="text-stone-400 mb-8 leading-relaxed">
-            Authentic Belgian waffles, crafted with love and imported pearl sugar. The perfect start to your morning or a late-night treat.
+Freshly prepared waffles, delightful desserts, and handcrafted treats made to brighten your day, one bite at a time.
           </p>
           <div className="flex space-x-4">
             <a 
-              href="https://www.instagram.com/waffinity"
+              href="https://www.instagram.com/waffinity__?igsh=aGQzbGwzcnAzZTl5"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-500 hover:text-stone-900 transition-colors text-stone-300"
@@ -103,8 +114,11 @@ export default function ContactFooter() {
 
       </div>
 
-      <div className="container mx-auto mt-16 pt-8 border-t border-stone-800 text-center text-stone-500 text-sm">
+      <div className="container mx-auto mt-16 pt-8 border-t border-stone-800 text-center text-stone-500 text-sm space-y-1">
         <p>© {new Date().getFullYear()} Waffinity. All rights reserved.</p>
+        <p className="text-xs text-stone-600">
+          Powered by <span className="text-amber-500/80 font-medium">Taigrow</span>
+        </p>
       </div>
     </motion.footer>
   );

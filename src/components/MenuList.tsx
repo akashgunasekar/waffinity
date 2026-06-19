@@ -68,8 +68,8 @@ export const menuItems: MenuItem[] = [
     image: "/image/menu/menu_red_velvet.png",
     hasOptions: true,
     options: [
-      { name: "Stick", price: 80 },
-      { name: "Round", price: 140 }
+      { name: "Stick", price: 100 },
+      { name: "Round", price: 150 }
     ],
     flavors: [
       { name: "Red velvet overload" },
@@ -78,7 +78,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     id: 4,
-    title: "Mini Pancakes",
+    title: "Mini Pancakes (12pcs)",
     description: "A platter of fluffy, bite-sized mini pancakes smothered in delicious toppings of your choice.",
     image: "/image/menu/menu_mini_pancake.png",
     basePrice: 100,
@@ -154,9 +154,9 @@ export const menuItems: MenuItem[] = [
     description: "Fudgy, dense chocolate brownie slices baked to perfection with gourmet topping sauces.",
     image: "/image/menu/menu_brownie.png",
     flavors: [
-      { name: "Triple chocolate", price: 140 },
-      { name: "Biscoff brownie", price: 140 },
-      { name: "Nutella brownie", price: 140 },
+      { name: "Triple chocolate", price: 150 },
+      { name: "Biscoff brownie", price: 150 },
+      { name: "Nutella brownie", price: 150 },
       { name: "White chocolate", price: 100 },
       { name: "Milk chocolate", price: 100 },
       { name: "Dark chocolate", price: 100 }
@@ -173,6 +173,67 @@ export const menuItems: MenuItem[] = [
       { name: "Milk chocolate", price: 120 },
       { name: "White chocolate", price: 120 },
       { name: "Dark chocolate", price: 120 }
+    ]
+  },
+  {
+    id: 9,
+    title: "Tres Leches Cake",
+    description: "A luxurious, moist sponge cake soaked in three kinds of milk, topped with rich whipped cream and fresh strawberries.",
+    image: "/image/menu/menu_tresleches.png",
+    basePrice: 140,
+    flavors: [
+      { name: "Classic Tres Leches" }
+    ]
+  },
+  // {
+  //   id: 10,
+  //   title: "Laban Loaded Bowl",
+  //   description: "Our signature viral Egyptian dessert bowl: layered with creamy milk pudding, soft sponge cake, fresh Qashta cream, crushed pistachios, and fresh strawberries.",
+  //   image: "/image/menu/menu_laban.png",
+  //   basePrice: 340,
+  //   flavors: [
+  //     { name: "Classic Laban Bowl" }
+  //   ]
+  // },
+  {
+    id: 11,
+    title: "Blueberry Cream Cheese Waffle",
+    description: "Delicate waffle topped with rich cream cheese spread and sweet, tangy wild blueberry compote.",
+    image: "/image/menu/menu_blueberry_cheese.png",
+    basePrice: 160,
+    flavors: [
+      { name: "Classic Cream Cheese" },
+      { name: "Double Blueberry Delight" },
+      { name: "White Chocolate Blueberry" }
+    ]
+  },
+  {
+    id: 12,
+    title: "Nutella Banana Waffle",
+    description: "Crispy waffle topped with fresh sliced banana, loaded with Nutella drizzle and toasted nuts.",
+    image: "/image/menu/menu_nutella_banana.png",
+    basePrice: 160,
+    flavors: [
+      { name: "Classic Nutella Banana" },
+      { name: "Caramel Banana Crunch" },
+      { name: "Peanut Butter Banana" }
+    ]
+  },
+  {
+    id: 13,
+    title: "Milkshakes",
+    description: "Creamy, rich blended milkshakes served fresh, available in small or large sizes.",
+    image: "/image/menu/menu_waffle_shake.png",
+    hasOptions: true,
+    options: [
+      { name: "Small", price: 60 },
+      { name: "Large", price: 120 }
+    ],
+    flavors: [
+      { name: "Butterscotch" },
+      { name: "Strawberry" },
+      { name: "Chocolate" },
+      { name: "Mango" }
     ]
   }
 ];
@@ -417,8 +478,8 @@ export default function MenuList() {
     <section id="menu" className="py-32">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-amber-50 mb-4">
-            Our Menu
+          <h2 className="font-heading text-4xl md:text-5xl font-black text-amber-50 mb-4 tracking-tight uppercase">
+            OUR <span className="font-serif italic font-normal text-amber-500 lowercase">menu</span>
           </h2>
           <p className="text-stone-400 text-lg max-w-xl mx-auto">
             Choose your favorites, select your flavor, and customize your orders today.
